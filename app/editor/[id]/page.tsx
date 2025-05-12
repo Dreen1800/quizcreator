@@ -265,848 +265,6 @@ function ImageDisplay({ component }: { component: ImageComponent }) {
         <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center text-gray-400">
           <ImageIcon className="h-8 w-8 mr-2" /> Sem Imagem
         </div>
-
-        <div className="flex flex-1 overflow-hidden">
-          <div className="w-64 flex flex-col border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-            <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-800 p-2">
-              <div className="flex items-center justify-between mb-2 px-2">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Etapas</h3>
-                <Button variant="ghost" size="sm" onClick={addStep} className="h-7 px-2 text-emerald-500 hover:text-emerald-400">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Adicionar
-                </Button>
-              </div>
-
-          <div className="w-80 border-l border-gray-200 dark:border-gray-800 overflow-y-auto p-4 space-y-6 bg-white dark:bg-gray-900">
-            {activeTab === "construtor" && currentStepData && !selectedComponentId && (
-              <>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Título da Etapa</h3>
-                  <Input
-                    value={currentStepData.title}
-                    onChange={(e) => updateStep(selectedStepId!, { title: e.target.value })}
-                    placeholder="Título exibido na etapa"
-                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Nome da Etapa (interno)</h3>
-                  <Input
-                    value={currentStepData.name}
-                    onChange={(e) => updateStep(selectedStepId!, { name: e.target.value })}
-                    placeholder="Nome interno da etapa"
-                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Usado para navegação e identificação.</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Configurações do Header</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="show-logo" className="text-sm text-gray-700 dark:text-gray-300">
-                        Mostrar Logo
-                      </Label>
-                      <Switch
-                        id="show-logo"
-                        checked={currentStepData.showLogo ?? true}
-                        onCheckedChange={(checked) => updateStep(selectedStepId!, { showLogo: checked })}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="show-progress" className="text-sm text-gray-700 dark:text-gray-300">
-                        Mostrar Progresso
-                      </Label>
-                      <Switch
-                        id="show-progress"
-                        checked={currentStepData.showProgress ?? true}
-                        onCheckedChange={(checked) => updateStep(selectedStepId!, { showProgress: checked })}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="allow-return" className="text-sm text-gray-700 dark:text-gray-300">
-                        Permitir Voltar
-                      </Label>
-                      <Switch
-                        id="allow-return"
-                        checked={currentStepData.allowReturn ?? true}
-                        onCheckedChange={(checked) => updateStep(selectedStepId!, { allowReturn: checked })}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
-                  <Button
-                    variant="outline"
-                    className="w-full border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
-                    onClick={() => removeStep(selectedStepId!)}
-                    disabled={quiz.steps.length <= 1}
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Remover Etapa
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {activeTab === "construtor" && currentStepData && selectedComponentId && getSelectedComponent() && (
-              <>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                    Propriedades: {getSelectedComponent()?.type}
-                  </h3>
-                  {renderComponentPropertiesForm(
-                    selectedStepId!,
-                    getSelectedComponent()!,
-                    updateComponent,
-                    quiz.steps,
-                    theme
-                  )}
-                </div>
-                <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
-                  <Button
-                    variant="outline"
-                    className="w-full border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
-                    onClick={() => removeComponent(selectedStepId!, selectedComponentId!)}
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Remover Componente
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {activeTab === "construtor" && !currentStepData && (
-              <p className="text-sm text-gray-500 text-center mt-10">Selecione ou adicione uma etapa para ver as propriedades.</p>
-            )}
-
-            {activeTab === "fluxo" && <p className="text-sm text-gray-500">Configurações do Fluxo (WIP)</p>}
-            {activeTab === "design" && <p className="text-sm text-gray-500">Opções de Design (WIP)</p>}
-            {activeTab === "leads" && <p className="text-sm text-gray-500">Opções de Leads (WIP)</p>}
-            {activeTab === "configuracoes" && <p className="text-sm text-gray-500">Configurações Gerais do Quiz (WIP)</p>}
-          </div>
-        </div>
-      </div>
-      <DragOverlay>
-        {draggedItem ? (
-          <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-md shadow-lg opacity-90 min-w-[200px]">
-            {renderComponentInCanvas(draggedItem)}
-          </div>
-        ) : null}
-      </DragOverlay>
-
-      {/* Toast with theme support */}
-      <Toast
-        message={toast.message}
-        visible={toast.visible}
-        onClose={() => setToast({ ...toast, visible: false })}
-      />
-    </DndContext>
-  )
-}
-
-function renderComponentPropertiesForm(
-  stepId: string,
-  component: Component,
-  onUpdate: (stepId: string, componentId: string, updates: Partial<Component>) => void,
-  allSteps: Step[],
-  currentTheme: string = 'dark'
-) {
-  // Common input class for consistent styling with theme support
-  const inputClass = "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 mt-1";
-  const selectClass = "w-full flex h-9 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1 text-sm mt-1 text-gray-900 dark:text-gray-100";
-
-  if (isButtonComponent(component)) {
-    const btnComp = component as ButtonComponent
-    return (
-      <div className="space-y-3">
-        <div>
-          <Label htmlFor="comp-btn-text" className="text-xs text-gray-600 dark:text-gray-400">Texto</Label>
-          <Input id="comp-btn-text" value={btnComp.text}
-            onChange={(e) => onUpdate(stepId, btnComp.id, { text: e.target.value })}
-            className={inputClass} />
-        </div>
-        <div>
-          <Label htmlFor="comp-btn-action" className="text-xs text-gray-600 dark:text-gray-400">Ação</Label>
-          <select id="comp-btn-action" value={typeof btnComp.action === 'string' ? btnComp.action : 'goToStep'}
-            onChange={(e) => {
-              const actionValue = e.target.value
-              // @ts-ignore - We're handling the types here
-              const newAction = actionValue === 'nextStep' || actionValue === 'externalLink' ? actionValue : { goToStep: '' }
-              onUpdate(stepId, btnComp.id, { action: newAction })
-            }}
-            className={selectClass}>
-            <option value="nextStep">Ir para próxima etapa</option>
-            <option value="externalLink">Link externo</option>
-            <option value="goToStep">Ir para etapa específica</option>
-          </select>
-        </div>
-
-        {btnComp.action && typeof btnComp.action === 'object' && 'goToStep' in btnComp.action ? (
-          <div>
-            <Label htmlFor="comp-btn-step-id" className="text-xs text-gray-600 dark:text-gray-400">Etapa de destino</Label>
-            <select id="comp-btn-step-id" value={btnComp.action.goToStep}
-              onChange={(e) => {
-                // Update the current action to include the specific step
-                const goToStepAction = { goToStep: e.target.value }
-                onUpdate(stepId, btnComp.id, { action: goToStepAction })
-              }}
-              className={selectClass}>
-              <option value="">Selecione uma etapa</option>
-              {allSteps.map((s, index) => (
-                <option key={s.id} value={s.id}>{s.name || `Etapa ${index + 1}`}</option>
-              ))}
-            </select>
-          </div>
-        ) : btnComp.action === 'externalLink' && (
-          <div>
-            <Label htmlFor="comp-btn-url" className="text-xs text-gray-600 dark:text-gray-400">URL</Label>
-            <input
-              id="comp-btn-url"
-              value={btnComp.externalUrl || ''}
-              onChange={(e) => onUpdate(stepId, btnComp.id, { externalUrl: e.target.value })}
-              placeholder="https://exemplo.com"
-              className={selectClass}
-            />
-          </div>
-        )}
-
-        <div>
-          <Label htmlFor="comp-btn-size" className="text-xs text-gray-600 dark:text-gray-400">Tamanho</Label>
-          <select
-            id="comp-btn-size"
-            value={btnComp.size}
-            onChange={(e) => onUpdate(stepId, btnComp.id, { size: e.target.value as any })}
-            className={selectClass}
-          >
-            <option value="small">Pequeno</option>
-            <option value="medium">Médio</option>
-            <option value="large">Grande</option>
-          </select>
-        </div>
-
-        <div>
-          <Label htmlFor="comp-btn-alignment" className="text-xs text-gray-600 dark:text-gray-400">Alinhamento</Label>
-          <select
-            id="comp-btn-alignment"
-            value={btnComp.alignment}
-            onChange={(e) => onUpdate(stepId, btnComp.id, { alignment: e.target.value as any })}
-            className={selectClass}
-          >
-            <option value="left">Esquerda</option>
-            <option value="center">Centro</option>
-            <option value="right">Direita</option>
-          </select>
-        </div>
-
-        <div>
-          <Label className="text-xs text-gray-600 dark:text-gray-400 mb-2 block">Cor</Label>
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="comp-btn-gradient"
-              checked={btnComp.color.isGradient}
-              onCheckedChange={(checked) => {
-                const newColor = { ...btnComp.color, isGradient: checked };
-                if (checked && !newColor.gradientFrom) {
-                  newColor.gradientFrom = '#10b981';
-                  newColor.gradientTo = '#3b82f6';
-                }
-                onUpdate(stepId, btnComp.id, { color: newColor });
-              }}
-            />
-            <Label htmlFor="comp-btn-gradient" className="text-xs text-gray-600 dark:text-gray-400">Usar gradiente</Label>
-          </div>
-
-          {btnComp.color.isGradient ? (
-            <div className="space-y-3 mt-2">
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label htmlFor="comp-btn-gradient-from" className="text-xs text-gray-600 dark:text-gray-400">De</Label>
-                  <div className="flex mt-1">
-                    <input
-                      id="comp-btn-gradient-from"
-                      type="color"
-                      value={btnComp.color.gradientFrom || '#10b981'}
-                      onChange={(e) => {
-                        const newColor = { ...btnComp.color, gradientFrom: e.target.value };
-                        onUpdate(stepId, btnComp.id, { color: newColor });
-                      }}
-                      className="w-10 h-9 p-1 border border-gray-300 dark:border-gray-700 rounded-l-md"
-                    />
-                    <Input
-                      value={btnComp.color.gradientFrom || '#10b981'}
-                      onChange={(e) => {
-                        const newColor = { ...btnComp.color, gradientFrom: e.target.value };
-                        onUpdate(stepId, btnComp.id, { color: newColor });
-                      }}
-                      className={`${inputClass} rounded-l-none`}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="comp-btn-gradient-to" className="text-xs text-gray-600 dark:text-gray-400">Para</Label>
-                  <div className="flex mt-1">
-                    <input
-                      id="comp-btn-gradient-to"
-                      type="color"
-                      value={btnComp.color.gradientTo || '#3b82f6'}
-                      onChange={(e) => {
-                        const newColor = { ...btnComp.color, gradientTo: e.target.value };
-                        onUpdate(stepId, btnComp.id, { color: newColor });
-                      }}
-                      className="w-10 h-9 p-1 border border-gray-300 dark:border-gray-700 rounded-l-md"
-                    />
-                    <Input
-                      value={btnComp.color.gradientTo || '#3b82f6'}
-                      onChange={(e) => {
-                        const newColor = { ...btnComp.color, gradientTo: e.target.value };
-                        onUpdate(stepId, btnComp.id, { color: newColor });
-                      }}
-                      className={`${inputClass} rounded-l-none`}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="comp-btn-gradient-direction" className="text-xs text-gray-600 dark:text-gray-400">Direção do gradiente</Label>
-                <select
-                  id="comp-btn-gradient-direction"
-                  value={btnComp.color.gradientDirection || "to right"}
-                  onChange={(e) => {
-                    const newColor = { ...btnComp.color, gradientDirection: e.target.value as any };
-                    onUpdate(stepId, btnComp.id, { color: newColor });
-                  }}
-                  className={selectClass}
-                >
-                  <option value="to right">Da esquerda para direita</option>
-                  <option value="to left">Da direita para esquerda</option>
-                  <option value="to bottom">De cima para baixo</option>
-                  <option value="to top">De baixo para cima</option>
-                  <option value="to bottom right">Diagonal (superior esquerdo → inferior direito)</option>
-                  <option value="to bottom left">Diagonal (superior direito → inferior esquerdo)</option>
-                  <option value="to top right">Diagonal (inferior esquerdo → superior direito)</option>
-                  <option value="to top left">Diagonal (inferior direito → superior esquerdo)</option>
-                </select>
-              </div>
-            </div>
-          ) : (
-            <div className="flex mt-2">
-              <input
-                id="comp-btn-color"
-                type="color"
-                value={btnComp.color.solid}
-                onChange={(e) => {
-                  const newColor = { ...btnComp.color, solid: e.target.value };
-                  onUpdate(stepId, btnComp.id, { color: newColor });
-                }}
-                className="w-10 h-9 p-1 border border-gray-300 dark:border-gray-700 rounded-l-md"
-              />
-              <Input
-                value={btnComp.color.solid}
-                onChange={(e) => {
-                  const newColor = { ...btnComp.color, solid: e.target.value };
-                  onUpdate(stepId, btnComp.id, { color: newColor });
-                }}
-                className={`${inputClass} rounded-l-none`}
-              />
-            </div>
-          )}
-        </div>
-
-        <div>
-          <Label className="text-xs text-gray-600 dark:text-gray-400 mb-2 block">Borda</Label>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label htmlFor="comp-btn-border-size" className="text-xs text-gray-600 dark:text-gray-400">Espessura</Label>
-              <Input
-                id="comp-btn-border-size"
-                type="number"
-                min="0"
-                max="10"
-                value={btnComp.border.size}
-                onChange={(e) => {
-                  const newBorder = { ...btnComp.border, size: parseInt(e.target.value) };
-                  onUpdate(stepId, btnComp.id, { border: newBorder });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-border-radius" className="text-xs text-gray-600 dark:text-gray-400">Arredondamento</Label>
-              <Input
-                id="comp-btn-border-radius"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.border.radius}
-                onChange={(e) => {
-                  const newBorder = { ...btnComp.border, radius: parseInt(e.target.value) };
-                  onUpdate(stepId, btnComp.id, { border: newBorder });
-                }}
-                className={inputClass}
-              />
-            </div>
-          </div>
-          <div className="mt-2">
-            <Label htmlFor="comp-btn-border-color" className="text-xs text-gray-600 dark:text-gray-400">Cor da borda</Label>
-            <div className="flex mt-1">
-              <input
-                id="comp-btn-border-color"
-                type="color"
-                value={btnComp.border.color}
-                onChange={(e) => {
-                  const newBorder = { ...btnComp.border, color: e.target.value };
-                  onUpdate(stepId, btnComp.id, { border: newBorder });
-                }}
-                className="w-10 h-9 p-1 border border-gray-300 dark:border-gray-700 rounded-l-md"
-              />
-              <Input
-                value={btnComp.border.color}
-                onChange={(e) => {
-                  const newBorder = { ...btnComp.border, color: e.target.value };
-                  onUpdate(stepId, btnComp.id, { border: newBorder });
-                }}
-                className={`${inputClass} rounded-l-none`}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <Label className="text-xs text-gray-600 dark:text-gray-400 mb-2 block">Espaçamento interno (padding)</Label>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label htmlFor="comp-btn-padding-top" className="text-xs text-gray-600 dark:text-gray-400">Superior</Label>
-              <Input
-                id="comp-btn-padding-top"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.padding?.top || 10}
-                onChange={(e) => {
-                  const newPadding = {
-                    ...(btnComp.padding || { top: 10, right: 20, bottom: 10, left: 20 }),
-                    top: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { padding: newPadding });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-padding-right" className="text-xs text-gray-600 dark:text-gray-400">Direita</Label>
-              <Input
-                id="comp-btn-padding-right"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.padding?.right || 20}
-                onChange={(e) => {
-                  const newPadding = {
-                    ...(btnComp.padding || { top: 10, right: 20, bottom: 10, left: 20 }),
-                    right: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { padding: newPadding });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-padding-bottom" className="text-xs text-gray-600 dark:text-gray-400">Inferior</Label>
-              <Input
-                id="comp-btn-padding-bottom"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.padding?.bottom || 10}
-                onChange={(e) => {
-                  const newPadding = {
-                    ...(btnComp.padding || { top: 10, right: 20, bottom: 10, left: 20 }),
-                    bottom: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { padding: newPadding });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-padding-left" className="text-xs text-gray-600 dark:text-gray-400">Esquerda</Label>
-              <Input
-                id="comp-btn-padding-left"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.padding?.left || 20}
-                onChange={(e) => {
-                  const newPadding = {
-                    ...(btnComp.padding || { top: 10, right: 20, bottom: 10, left: 20 }),
-                    left: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { padding: newPadding });
-                }}
-                className={inputClass}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <Label className="text-xs text-gray-600 dark:text-gray-400 mb-2 block">Espaçamento externo (margin)</Label>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label htmlFor="comp-btn-margin-top" className="text-xs text-gray-600 dark:text-gray-400">Superior</Label>
-              <Input
-                id="comp-btn-margin-top"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.margin?.top || 0}
-                onChange={(e) => {
-                  const newMargin = {
-                    ...(btnComp.margin || { top: 0, right: 0, bottom: 0, left: 0 }),
-                    top: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { margin: newMargin });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-margin-right" className="text-xs text-gray-600 dark:text-gray-400">Direita</Label>
-              <Input
-                id="comp-btn-margin-right"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.margin?.right || 0}
-                onChange={(e) => {
-                  const newMargin = {
-                    ...(btnComp.margin || { top: 0, right: 0, bottom: 0, left: 0 }),
-                    right: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { margin: newMargin });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-margin-bottom" className="text-xs text-gray-600 dark:text-gray-400">Inferior</Label>
-              <Input
-                id="comp-btn-margin-bottom"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.margin?.bottom || 0}
-                onChange={(e) => {
-                  const newMargin = {
-                    ...(btnComp.margin || { top: 0, right: 0, bottom: 0, left: 0 }),
-                    bottom: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { margin: newMargin });
-                }}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <Label htmlFor="comp-btn-margin-left" className="text-xs text-gray-600 dark:text-gray-400">Esquerda</Label>
-              <Input
-                id="comp-btn-margin-left"
-                type="number"
-                min="0"
-                max="50"
-                value={btnComp.margin?.left || 0}
-                onChange={(e) => {
-                  const newMargin = {
-                    ...(btnComp.margin || { top: 0, right: 0, bottom: 0, left: 0 }),
-                    left: parseInt(e.target.value)
-                  };
-                  onUpdate(stepId, btnComp.id, { margin: newMargin });
-                }}
-                className={inputClass}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }>
-
-          <div
-            ref={setDroppableNodeRef}
-            className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 bg-gray-100 dark:bg-gray-900"
-          >
-            {activeTab === "construtor" && currentStepData && (
-              <div className="max-w-3xl mx-auto">
-                <div className="mb-6">
-                  {/* Preview background color selector */}
-                  <div className="mb-4 flex flex-wrap items-center gap-3 justify-end">
-                    <div className="flex items-center gap-2">
-                      <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                        Background:
-                      </Label>
-                      <div className="flex items-center gap-1">
-                        <select
-                          value={previewBackground}
-                          onChange={e => setPreviewBackground(e.target.value)}
-                          className="h-8 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100"
-                        >
-                          <option value="white">Branco</option>
-                          <option value="dark">Escuro</option>
-                          <option value="blue">Azul</option>
-                          <option value="green">Verde</option>
-                          <option value="purple">Roxo</option>
-                          <option value="pink">Rosa</option>
-                          <option value="orange">Laranja</option>
-                          <option value="gray">Cinza</option>
-                          <option value="custom">Personalizado</option>
-                        </select>
-                        
-                        {previewBackground === 'custom' ? (
-                          <div className="flex items-center ml-2">
-                            <input
-                              type="color"
-                              value="#ffffff"
-                              onChange={e => setPreviewBackground(e.target.value)}
-                              className="w-8 h-8 p-1 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer"
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="h-6 w-6 rounded-full border border-gray-300 dark:border-gray-700 ml-2"
-                            style={{
-                              backgroundColor: 
-                                previewBackground === 'white' ? '#ffffff' :
-                                previewBackground === 'dark' ? '#1f2937' :
-                                previewBackground === 'blue' ? '#2563eb' :
-                                previewBackground === 'green' ? '#059669' :
-                                previewBackground === 'purple' ? '#7c3aed' :
-                                previewBackground === 'pink' ? '#db2777' :
-                                previewBackground === 'orange' ? '#ea580c' :
-                                previewBackground === 'gray' ? '#6b7280' :
-                                previewBackground
-                            }}
-                          />
-                        )}
-                      </div>
-                    </div>
-
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            onClick={() => setPreviewBackground('white')} 
-                            variant="outline" 
-                            size="sm"
-                            className="h-8 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300"
-                          >
-                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1">
-                              <path d="M7.5 2C4.46243 2 2 4.46243 2 7.5C2 10.5376 4.46243 13 7.5 13C10.5376 13 13 10.5376 13 7.5C13 4.46243 10.5376 2 7.5 2ZM1 7.5C1 3.91015 3.91015 1 7.5 1C11.0899 1 14 3.91015 14 7.5C14 11.0899 11.0899 14 7.5 14C3.91015 14 1 11.0899 1 7.5Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-                              <path d="M7.5 10.625C9.22589 10.625 10.625 9.22589 10.625 7.5C10.625 5.77411 9.22589 4.375 7.5 4.375C5.77411 4.375 4.375 5.77411 4.375 7.5C4.375 9.22589 5.77411 10.625 7.5 10.625Z" fill="currentColor"></path>
-                            </svg>
-                            Resetar
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Voltar para o background padrão (branco)</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            onClick={() => window.open('', '_blank')} 
-                            variant="outline" 
-                            size="sm"
-                            className="h-8 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300"
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            Preview
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Abrir visualização em tela cheia</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-
-                  {/* Quiz preview area with the selected background color */}
-                  <div className="rounded-lg overflow-hidden shadow-lg transition-all duration-200"
-                    style={{
-                      backgroundColor: 
-                        previewBackground === 'white' ? '#ffffff' :
-                        previewBackground === 'dark' ? '#1f2937' :
-                        previewBackground === 'blue' ? '#2563eb' :
-                        previewBackground === 'green' ? '#059669' :
-                        previewBackground === 'purple' ? '#7c3aed' :
-                        previewBackground === 'pink' ? '#db2777' :
-                        previewBackground === 'orange' ? '#ea580c' :
-                        previewBackground === 'gray' ? '#6b7280' :
-                        previewBackground
-                    }}
-                  >
-                >
-                  <div className="p-6">
-                    {currentStepData.showLogo && (
-                      <div className="flex justify-center mb-4">
-                        <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                          <ImageIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                        </div>
-                      </div>
-                    )}
-
-                    {currentStepData.showProgress && (
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
-                        <div
-                          className="bg-emerald-500 h-2 rounded-full transition-all duration-300 ease-out"
-                          style={{ width: `${((quiz.steps.findIndex(s => s.id === selectedStepId) + 1) / quiz.steps.length) * 100}%` }}
-                        ></div>
-                      </div>
-                    )}
-
-                    <div className="flex items-center justify-between">
-                      {currentStepData.allowReturn && quiz.steps.findIndex(s => s.id === selectedStepId) > 0 && (
-                        <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                          onClick={() => { /* TODO: Navigate to previous step */ }}
-                        >
-                          <ArrowLeft className="h-4 w-4 mr-1" />
-                          Voltar
-                        </Button>
-                      )}
-                      <div />
-                    </div>
-
-                    {/* Components area */}
-                    <div className="space-y-4 mt-4">
-                      {currentStepData.components.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center min-h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
-                          <p className="text-gray-500 dark:text-gray-400 mb-4">Nada por aqui 😢</p>
-                          <p className="text-gray-500">Clique em "Adicionar Componente" para começar.</p>
-                        </div>
-                      ) : (
-                        <SortableContext items={currentStepData.components.map(c => c.id)} strategy={verticalListSortingStrategy}>
-                          <div className="space-y-4 min-h-[200px]">
-                            {currentStepData.components.map(component => (
-                              <SortableComponentItem
-                                key={component.id}
-                                id={component.id}
-                                component={component}
-                                isSelected={selectedComponentId === component.id}
-                                renderComponent={renderComponentInCanvas}
-                                onClick={() => setSelectedComponentId(component.id)}
-                              />
-                            ))}
-                          </div>
-                        </SortableContext>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Add component button - Now positioned below and styled with theme support */}
-                {selectedStepId && (
-                  <div className="flex justify-center mt-6">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 shadow-sm">
-                          <Plus className="h-4 w-4 mr-2" />
-                          Adicionar Componente
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
-                        <DialogHeader>
-                          <DialogTitle className="text-gray-900 dark:text-white">Selecione um componente</DialogTitle>
-                          <DialogDescription className="text-gray-600 dark:text-gray-400">
-                            Clique em um componente para adicioná-lo à etapa atual.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="max-h-[60vh] overflow-y-auto pr-1 custom-scrollbar">
-                          <div className="grid grid-cols-2 gap-3 p-4">
-                            {componentsList.map((component) => (
-                              <Button
-                                key={component.type}
-                                variant="outline"
-                                className="flex flex-col h-28 p-4 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
-                                onClick={() => {
-                                  addComponent(selectedStepId, component.type);
-                                }}
-                              >
-                                <div className="mb-3 text-emerald-500">
-                                  {component.icon}
-                                </div>
-                                <span className="text-sm font-medium">{component.name}</span>
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === "construtor" && !currentStepData && quiz.steps.length > 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <p className="text-gray-600 dark:text-gray-400">Selecione uma etapa na barra lateral esquerda para começar a editar.</p>
-              </div>
-            )}
-
-            {activeTab === "construtor" && quiz.steps.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
-                <p className="text-gray-600 dark:text-gray-400 mb-4">Quiz Vazio 😢</p>
-                <p className="text-gray-500 mb-6">Adicione sua primeira etapa usando o botão '+' na barra lateral esquerda.</p>
-              </div>
-            )}
-
-            {activeTab === "fluxo" && (
-              <div className="h-full">
-                <p className="text-gray-600 dark:text-gray-400">Visualização do fluxo ainda não implementada.</p>
-              </div>
-            )}
-            {activeTab === "design" && <p className="text-gray-600 dark:text-gray-400">Opções de Design (WIP)</p>}
-            {activeTab === "leads" && <p className="text-gray-600 dark:text-gray-400">Visualização de Leads (WIP)</p>}
-            {activeTab === "configuracoes" && <p className="text-gray-600 dark:text-gray-400">Configurações Gerais (WIP)</p>}
-          </div>
-              <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
-                {quiz.steps.map((step, index) => (
-                  <Button
-                    key={step.id}
-                    variant={selectedStepId === step.id ? "secondary" : "ghost"}
-                    className="w-full justify-start text-sm"
-                    onClick={() => {
-                      setSelectedStepId(step.id)
-                      setSelectedComponentId(null)
-                    }}
-                  >
-                    {step.name || `Etapa ${index + 1}`}
-                  </Button>
-                ))}
-                {quiz.steps.length === 0 && (
-                  <p className="text-xs text-gray-500 px-2 py-4 text-center">Clique em 'Adicionar' para criar sua primeira etapa.</p>
-                )}
-              </div>
-            </div>
-
-            {/* Sidebar info section */}
-            <div className="flex-grow p-4 text-sm text-gray-600 dark:text-gray-400">
-              <h3 className="font-medium mb-2">Instruções</h3>
-              <p className="text-gray-500 mb-4">Selecione uma etapa para editar seu conteúdo. Use o botão "Adicionar Componente" para incluir elementos na sua etapa.</p>
-
-              <h4 className="font-medium mt-4 mb-1">Componentes disponíveis:</h4>
-              <ul className="list-disc pl-5 text-xs space-y-1 text-gray-500">
-                <li>Botões de ação</li>
-                <li>Campos de entrada</li>
-                <li>Imagens</li>
-                <li>Seleção de opções</li>
-                <li>E muito mais!</li>
-              </ul>
-            </div>
-          </div>
       )}
     </div>
   );
@@ -1779,4 +937,421 @@ export default function QuizEditor({ params }: { params: { id: string } }) {
               Publicar
             </Button>
           </div>
-        </div
+        </div>
+
+        <div className="flex flex-1 overflow-hidden">
+          <div className="w-64 flex flex-col border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+            <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-800 p-2">
+              <div className="flex items-center justify-between mb-2 px-2">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Etapas</h3>
+                <Button variant="ghost" size="sm" onClick={addStep} className="h-7 px-2 text-emerald-500 hover:text-emerald-400">
+                  <Plus className="h-4 w-4 mr-1" />
+                  Adicionar
+                </Button>
+              </div>
+
+              <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+                {quiz.steps.map((step, index) => (
+                  <Button
+                    key={step.id}
+                    variant={selectedStepId === step.id ? "secondary" : "ghost"}
+                    className="w-full justify-start text-sm"
+                    onClick={() => {
+                      setSelectedStepId(step.id)
+                      setSelectedComponentId(null)
+                    }}
+                  >
+                    {step.name || `Etapa ${index + 1}`}
+                  </Button>
+                ))}
+                {quiz.steps.length === 0 && (
+                  <p className="text-xs text-gray-500 px-2 py-4 text-center">Clique em 'Adicionar' para criar sua primeira etapa.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Sidebar info section */}
+            <div className="flex-grow p-4 text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-medium mb-2">Instruções</h3>
+              <p className="text-gray-500 mb-4">Selecione uma etapa para editar seu conteúdo. Use o botão "Adicionar Componente" para incluir elementos na sua etapa.</p>
+
+              <h4 className="font-medium mt-4 mb-1">Componentes disponíveis:</h4>
+              <ul className="list-disc pl-5 text-xs space-y-1 text-gray-500">
+                <li>Botões de ação</li>
+                <li>Campos de entrada</li>
+                <li>Imagens</li>
+                <li>Seleção de opções</li>
+                <li>E muito mais!</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="w-80 border-l border-gray-200 dark:border-gray-800 overflow-y-auto p-4 space-y-6 bg-white dark:bg-gray-900">
+            {activeTab === "construtor" && currentStepData && !selectedComponentId && (
+              <>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Título da Etapa</h3>
+                  <Input
+                    value={currentStepData.title}
+                    onChange={(e) => updateStep(selectedStepId!, { title: e.target.value })}
+                    placeholder="Título exibido na etapa"
+                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                  />
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Nome da Etapa (interno)</h3>
+                  <Input
+                    value={currentStepData.name}
+                    onChange={(e) => updateStep(selectedStepId!, { name: e.target.value })}
+                    placeholder="Nome interno da etapa"
+                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Usado para navegação e identificação.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Configurações do Header</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="show-logo" className="text-sm text-gray-700 dark:text-gray-300">
+                        Mostrar Logo
+                      </Label>
+                      <Switch
+                        id="show-logo"
+                        checked={currentStepData.showLogo ?? true}
+                        onCheckedChange={(checked) => updateStep(selectedStepId!, { showLogo: checked })}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="show-progress" className="text-sm text-gray-700 dark:text-gray-300">
+                        Mostrar Progresso
+                      </Label>
+                      <Switch
+                        id="show-progress"
+                        checked={currentStepData.showProgress ?? true}
+                        onCheckedChange={(checked) => updateStep(selectedStepId!, { showProgress: checked })}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="allow-return" className="text-sm text-gray-700 dark:text-gray-300">
+                        Permitir Voltar
+                      </Label>
+                      <Switch
+                        id="allow-return"
+                        checked={currentStepData.allowReturn ?? true}
+                        onCheckedChange={(checked) => updateStep(selectedStepId!, { allowReturn: checked })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
+                  <Button
+                    variant="outline"
+                    className="w-full border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
+                    onClick={() => removeStep(selectedStepId!)}
+                    disabled={quiz.steps.length <= 1}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Remover Etapa
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {activeTab === "construtor" && currentStepData && selectedComponentId && getSelectedComponent() && (
+              <>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                    Propriedades: {getSelectedComponent()?.type}
+                  </h3>
+                  {renderComponentPropertiesForm(
+                    selectedStepId!,
+                    getSelectedComponent()!,
+                    updateComponent,
+                    quiz.steps,
+                    theme
+                  )}
+                </div>
+                <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
+                  <Button
+                    variant="outline"
+                    className="w-full border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
+                    onClick={() => removeComponent(selectedStepId!, selectedComponentId!)}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Remover Componente
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {activeTab === "construtor" && !currentStepData && (
+              <p className="text-sm text-gray-500 text-center mt-10">Selecione ou adicione uma etapa para ver as propriedades.</p>
+            )}
+
+            {activeTab === "fluxo" && <p className="text-sm text-gray-500">Configurações do Fluxo (WIP)</p>}
+            {activeTab === "design" && <p className="text-sm text-gray-500">Opções de Design (WIP)</p>}
+            {activeTab === "leads" && <p className="text-sm text-gray-500">Opções de Leads (WIP)</p>}
+            {activeTab === "configuracoes" && <p className="text-sm text-gray-500">Configurações Gerais do Quiz (WIP)</p>}
+          </div>
+
+          <div
+            ref={setDroppableNodeRef}
+            className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 bg-gray-100 dark:bg-gray-900"
+          >
+            {activeTab === "construtor" && currentStepData && (
+              <div className="max-w-3xl mx-auto">
+                <div className="mb-6">
+                  {/* Preview background color selector */}
+                  <div className="mb-4 flex flex-wrap items-center gap-3 justify-end">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Background:
+                      </Label>
+                      <div className="flex items-center gap-1">
+                        <select
+                          value={previewBackground}
+                          onChange={e => setPreviewBackground(e.target.value)}
+                          className="h-8 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="white">Branco</option>
+                          <option value="dark">Escuro</option>
+                          <option value="blue">Azul</option>
+                          <option value="green">Verde</option>
+                          <option value="purple">Roxo</option>
+                          <option value="pink">Rosa</option>
+                          <option value="orange">Laranja</option>
+                          <option value="gray">Cinza</option>
+                          <option value="custom">Personalizado</option>
+                        </select>
+                        
+                        {previewBackground === 'custom' ? (
+                          <div className="flex items-center ml-2">
+                            <input
+                              type="color"
+                              value="#ffffff"
+                              onChange={e => setPreviewBackground(e.target.value)}
+                              className="w-8 h-8 p-1 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer"
+                            />
+                          </div>
+                        ) : (
+                          <div 
+                            className="h-6 w-6 rounded-full border border-gray-300 dark:border-gray-700 ml-2"
+                            style={{
+                              backgroundColor: 
+                                previewBackground === 'white' ? '#ffffff' :
+                                previewBackground === 'dark' ? '#1f2937' :
+                                previewBackground === 'blue' ? '#2563eb' :
+                                previewBackground === 'green' ? '#059669' :
+                                previewBackground === 'purple' ? '#7c3aed' :
+                                previewBackground === 'pink' ? '#db2777' :
+                                previewBackground === 'orange' ? '#ea580c' :
+                                previewBackground === 'gray' ? '#6b7280' :
+                                previewBackground
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            onClick={() => setPreviewBackground('white')} 
+                            variant="outline" 
+                            size="sm"
+                            className="h-8 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300"
+                          >
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1">
+                              <path d="M7.5 2C4.46243 2 2 4.46243 2 7.5C2 10.5376 4.46243 13 7.5 13C10.5376 13 13 10.5376 13 7.5C13 4.46243 10.5376 2 7.5 2ZM1 7.5C1 3.91015 3.91015 1 7.5 1C11.0899 1 14 3.91015 14 7.5C14 11.0899 11.0899 14 7.5 14C3.91015 14 1 11.0899 1 7.5Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                              <path d="M7.5 10.625C9.22589 10.625 10.625 9.22589 10.625 7.5C10.625 5.77411 9.22589 4.375 7.5 4.375C5.77411 4.375 4.375 5.77411 4.375 7.5C4.375 9.22589 5.77411 10.625 7.5 10.625Z" fill="currentColor"></path>
+                            </svg>
+                            Resetar
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Voltar para o background padrão (branco)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            onClick={() => window.open('', '_blank')} 
+                            variant="outline" 
+                            size="sm"
+                            className="h-8 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300"
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Preview
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Abrir visualização em tela cheia</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+
+                  {/* Quiz preview area with the selected background color */}
+                  <div className="rounded-lg overflow-hidden shadow-lg transition-all duration-200"
+                    style={{
+                      backgroundColor: 
+                        previewBackground === 'white' ? '#ffffff' :
+                        previewBackground === 'dark' ? '#1f2937' :
+                        previewBackground === 'blue' ? '#2563eb' :
+                        previewBackground === 'green' ? '#059669' :
+                        previewBackground === 'purple' ? '#7c3aed' :
+                        previewBackground === 'pink' ? '#db2777' :
+                        previewBackground === 'orange' ? '#ea580c' :
+                        previewBackground === 'gray' ? '#6b7280' :
+                        previewBackground
+                    }}
+                  >
+                    <div className="p-6">
+                      {currentStepData.showLogo && (
+                        <div className="flex justify-center mb-4">
+                          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                            <ImageIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                          </div>
+                        </div>
+                      )}
+
+                      {currentStepData.showProgress && (
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+                          <div
+                            className="bg-emerald-500 h-2 rounded-full transition-all duration-300 ease-out"
+                            style={{ width: `${((quiz.steps.findIndex(s => s.id === selectedStepId) + 1) / quiz.steps.length) * 100}%` }}
+                          ></div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        {currentStepData.allowReturn && quiz.steps.findIndex(s => s.id === selectedStepId) > 0 && (
+                          <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                            onClick={() => { /* TODO: Navigate to previous step */ }}
+                          >
+                            <ArrowLeft className="h-4 w-4 mr-1" />
+                            Voltar
+                          </Button>
+                        )}
+                        <div />
+                      </div>
+
+                      {/* Components area */}
+                      <div className="space-y-4 mt-4">
+                        {currentStepData.components.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center min-h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
+                            <p className="text-gray-500 dark:text-gray-400 mb-4">Nada por aqui 😢</p>
+                            <p className="text-gray-500">Clique em "Adicionar Componente" para começar.</p>
+                          </div>
+                        ) : (
+                          <SortableContext items={currentStepData.components.map(c => c.id)} strategy={verticalListSortingStrategy}>
+                            <div className="space-y-4 min-h-[200px]">
+                              {currentStepData.components.map(component => (
+                                <SortableComponentItem
+                                  key={component.id}
+                                  id={component.id}
+                                  component={component}
+                                  isSelected={selectedComponentId === component.id}
+                                  renderComponent={renderComponentInCanvas}
+                                  onClick={() => setSelectedComponentId(component.id)}
+                                />
+                              ))}
+                            </div>
+                          </SortableContext>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Add component button - Now positioned below and styled with theme support */}
+                {selectedStepId && (
+                  <div className="flex justify-center mt-6">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 shadow-sm">
+                          <Plus className="h-4 w-4 mr-2" />
+                          Adicionar Componente
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
+                        <DialogHeader>
+                          <DialogTitle className="text-gray-900 dark:text-white">Selecione um componente</DialogTitle>
+                          <DialogDescription className="text-gray-600 dark:text-gray-400">
+                            Clique em um componente para adicioná-lo à etapa atual.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="max-h-[60vh] overflow-y-auto pr-1 custom-scrollbar">
+                          <div className="grid grid-cols-2 gap-3 p-4">
+                            {componentsList.map((component) => (
+                              <Button
+                                key={component.type}
+                                variant="outline"
+                                className="flex flex-col h-28 p-4 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                onClick={() => {
+                                  addComponent(selectedStepId, component.type);
+                                }}
+                              >
+                                <div className="mb-3 text-emerald-500">
+                                  {component.icon}
+                                </div>
+                                <span className="text-sm font-medium">{component.name}</span>
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "construtor" && !currentStepData && quiz.steps.length > 0 && (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <p className="text-gray-600 dark:text-gray-400">Selecione uma etapa na barra lateral esquerda para começar a editar.</p>
+              </div>
+            )}
+
+            {activeTab === "construtor" && quiz.steps.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-full border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
+                <p className="text-gray-600 dark:text-gray-400 mb-4">Quiz Vazio 😢</p>
+                <p className="text-gray-500 mb-6">Adicione sua primeira etapa usando o botão '+' na barra lateral esquerda.</p>
+              </div>
+            )}
+
+            {activeTab === "fluxo" && (
+              <div className="h-full">
+                <p className="text-gray-600 dark:text-gray-400">Visualização do fluxo ainda não implementada.</p>
+              </div>
+            )}
+            {activeTab === "design" && <p className="text-gray-600 dark:text-gray-400">Opções de Design (WIP)</p>}
+            {activeTab === "leads" && <p className="text-gray-600 dark:text-gray-400">Visualização de Leads (WIP)</p>}
+            {activeTab === "configuracoes" && <p className="text-gray-600 dark:text-gray-400">Configurações Gerais (WIP)</p>}
+          </div>
+        </div>
+      </div>
+      <DragOverlay>
+        {draggedItem ? (
+          <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-md shadow-lg opacity-90 min-w-[200px]">
+            {renderComponentInCanvas(draggedItem)}
+          </div>
+        ) : null}
+      </DragOverlay>
+
+      {/* Toast with theme support */}
+      <Toast
+        message={toast.message}
+        visible={toast.visible}
+        onClose={() => setToast({ ...toast, visible: false })}
+      />
+    </DndContext>
+  )
+}
